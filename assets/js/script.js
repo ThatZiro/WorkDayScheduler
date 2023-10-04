@@ -1,7 +1,6 @@
 //===============================================
 //================== Variables ==================
 //===============================================
-
 let startHour = 6;
 let endHour = 22;
 
@@ -9,6 +8,9 @@ let currentHour = 13;
 
 let dataArray = [];
 
+//===============================================
+//================== Running Logic ==============
+//===============================================
 $(function () {
   currentHour = dayjs().hour();
   BuildGrid();
@@ -16,50 +18,15 @@ $(function () {
   $(".btn").on("click", SetData);
 });
 
+//===============================================
+//================== Functions ==================
+//===============================================
+
 function UpdateHeader() {
   let dayOfMonth = dayjs().date();
   $("#currentDay").text(
     `${dayjs().format("dddd, MMMM")} ${addOrdinalIndicator(dayOfMonth)}`
   );
-}
-
-function SetData(event) {
-  let parent = $(this).parent();
-
-  let thisData = {
-    hour: parent.attr("id"),
-    textContent: parent.children("textarea").val(),
-  };
-
-  dataArray = GetData();
-  for (let i = 0; i < dataArray.length; i++) {
-    if (dataArray[i].hour == thisData.hour) {
-      dataArray.splice(i, 1);
-    }
-  }
-
-  dataArray.push(thisData);
-
-  localStorage.setItem("hourData", JSON.stringify(dataArray));
-}
-
-function GetData() {
-  let data = JSON.parse(localStorage.getItem("hourData"));
-  if (data == null) {
-    data = [];
-  }
-  return data;
-}
-
-function GetDataAtHour(hour) {
-  let data = GetData();
-
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].hour === hour) {
-      return data[i].textContent;
-    }
-  }
-  return "";
 }
 function BuildGrid() {
   for (let i = startHour; i <= endHour; i++) {
@@ -129,8 +96,51 @@ function UpdateColors() {
     }
   }
 }
+//===============================================
+//================== Database ===================
+//===============================================
+function SetData(event) {
+  let parent = $(this).parent();
 
-//Patch
+  let thisData = {
+    hour: parent.attr("id"),
+    textContent: parent.children("textarea").val(),
+  };
+
+  dataArray = GetData();
+  for (let i = 0; i < dataArray.length; i++) {
+    if (dataArray[i].hour == thisData.hour) {
+      dataArray.splice(i, 1);
+    }
+  }
+
+  dataArray.push(thisData);
+
+  localStorage.setItem("hourData", JSON.stringify(dataArray));
+}
+
+function GetData() {
+  let data = JSON.parse(localStorage.getItem("hourData"));
+  if (data == null) {
+    data = [];
+  }
+  return data;
+}
+
+function GetDataAtHour(hour) {
+  let data = GetData();
+
+  for (const item of data) {
+    if (item.hour === hour) {
+      return item.textContent;
+    }
+  }
+  return "";
+}
+
+//===============================================
+//================ DayJS Patch ==================
+//===============================================
 function addOrdinalIndicator(day) {
   console.log(day);
   if (day >= 11 && day <= 13) {
@@ -147,9 +157,3 @@ function addOrdinalIndicator(day) {
       return `${day}th`;
   }
 }
-
-//=====================================================
-//================== Event Listeners ==================
-//=====================================================
-
-// localStorage.clear();

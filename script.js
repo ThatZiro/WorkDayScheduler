@@ -21,3 +21,32 @@ $(function () {
   //
   // TODO: Add code to display the current date in the header of the page.
 });
+
+function UpdateHeader() {
+  //Get current Time from Day JS
+  //If New hour then UpdateColors(); // Use a call every 15 mins?
+  //Set Header Text = Current Time
+}
+
+function SetData(hour, item) {
+  //Date = hour-item
+  //Add Item Data To Persistent Data
+}
+
+function GetData(hour) {
+  //item = Get Item(hour);
+  //if item = null then item="";
+  //Return item
+}
+
+function BuildGrid(startHour, endHour) {
+  //Get reference to container
+  // for(let i = hourStart; i <= hourEnd; i++)
+  //    Build Grid Object
+}
+
+function UpdateColors() {
+  // for(let i = hourStart; i <= hourEnd; i++)
+  //Remove past | present | future
+  //Set Respective tag past = < current | present = current | future > current
+}

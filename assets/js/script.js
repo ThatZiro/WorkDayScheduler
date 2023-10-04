@@ -11,14 +11,16 @@ let dataArray = [];
 
 $(function () {
   currentHour = dayjs().hour();
-  console.log(currentHour);
   BuildGrid();
   UpdateHeader();
   $(".btn").on("click", SetData);
 });
 
 function UpdateHeader() {
-  $("#currentDay").text(dayjs());
+  let dayOfMonth = dayjs().date();
+  $("#currentDay").text(
+    `${dayjs().format("dddd, MMMM")} ${addOrdinalIndicator(dayOfMonth)}`
+  );
 }
 
 function SetData(event) {
@@ -54,7 +56,6 @@ function GetDataAtHour(hour) {
 
   for (let i = 0; i < data.length; i++) {
     if (data[i].hour === hour) {
-      console.log(data[i].hour + " | " + hour);
       return data[i].textContent;
     }
   }
@@ -126,6 +127,24 @@ function UpdateColors() {
     } else {
       $(`#hour-${i} textarea`).addClass("future");
     }
+  }
+}
+
+//Patch
+function addOrdinalIndicator(day) {
+  console.log(day);
+  if (day >= 11 && day <= 13) {
+    return `${day}th`;
+  }
+  switch (day % 10) {
+    case 1:
+      return `${day}st`;
+    case 2:
+      return `${day}nd`;
+    case 3:
+      return `${day}rd`;
+    default:
+      return `${day}th`;
   }
 }
 

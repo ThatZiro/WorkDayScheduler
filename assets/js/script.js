@@ -27,6 +27,11 @@ function UpdateHeader() {
   $("#currentDay").text(
     `${dayjs().format("dddd, MMMM")} ${addOrdinalIndicator(dayOfMonth)}`
   );
+
+  setInterval(() => {
+    currentHour = dayjs().hour();
+    UpdateHeader();
+  }, 300000);
 }
 function BuildGrid() {
   for (let i = startHour; i <= endHour; i++) {

@@ -8,6 +8,7 @@ let currentHour = 13;
 
 let dataArray = [];
 
+let alertTimer = null;
 //===============================================
 //================== Running Logic ==============
 //===============================================
@@ -23,6 +24,7 @@ $(function () {
 //===============================================
 
 function UpdateHeader() {
+  PopAlert("Time Updated", "info", 2000);
   let dayOfMonth = dayjs().date();
   $("#currentDay").text(
     `${dayjs().format("dddd, MMMM")} ${addOrdinalIndicator(dayOfMonth)}`
@@ -30,6 +32,7 @@ function UpdateHeader() {
 
   setInterval(() => {
     currentHour = dayjs().hour();
+    UpdateColors();
     UpdateHeader();
   }, 300000);
 }
@@ -111,7 +114,7 @@ function SetData(event) {
     hour: parent.attr("id"),
     textContent: parent.children("textarea").val(),
   };
-
+  PopAlert(`${thisData.hour} saved successfully`, "success", 2000);
   dataArray = GetData();
   for (let i = 0; i < dataArray.length; i++) {
     if (dataArray[i].hour == thisData.hour) {
@@ -141,6 +144,32 @@ function GetDataAtHour(hour) {
     }
   }
   return "";
+}
+
+function PopAlert(text, type, duration) {
+  currentAlert = text;
+  let alert = $("#Alert");
+  alert.removeClass("alert-info");
+  alert.removeClass("alert-success");
+
+  switch (type) {
+    case "success":
+      alert.addClass("alert-success");
+      break;
+    case "info":
+      alert.addClass("alert-info");
+      break;
+  }
+
+  alert.attr("style", "visibility : visible");
+  alert.text(text);
+
+  clearInterval(alertTimer);
+
+  alertTimer = setInterval(function () {
+    $("#Alert").attr("style", "visibility : hidden");
+    clearInterval(alertTimer);
+  }, duration);
 }
 
 //===============================================

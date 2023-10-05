@@ -2,13 +2,11 @@
 //================== Variables ==================
 //===============================================
 let startHour = 6;
-let endHour = 22;
+let endHour = 40;
 
 let currentHour = 13;
 
 let dataArray = [];
-
-let alertTimer = null;
 //===============================================
 //================== Running Logic ==============
 //===============================================
@@ -147,7 +145,6 @@ function GetDataAtHour(hour) {
 }
 
 function PopAlert(text, type, duration) {
-  currentAlert = text;
   let alert = $("#Alert");
   alert.removeClass("alert-info");
   alert.removeClass("alert-success");
